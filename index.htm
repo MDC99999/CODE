@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Grid Csv Large | JSCharting</title>
+    <title>Tabella | JSCharting</title>
     <meta http-equiv="content-type" content="text-html; charset=utf-8" />
 
     <script type="text/javascript" src="jsc/jscharting.js"></script>
@@ -10,21 +10,36 @@
 
     <link rel="stylesheet" type="text/css" href="css/default.css" />
     <style>
-      /*CSS*/
-      #fixed-header-table {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        background-color:white;
+      /* Imposta la larghezza delle colonne della tabella di intestazione come quella della tabella principale */
+      #headerTable th {
+        width: calc(100% / 6); /* divide 100% della larghezza della tabella per 6 colonne */
       }
     </style>
   </head>
   <body>
-    <p>Grid with 15K records</p>
+    <!-- Nuova tabella di intestazione con colonne "colonna1, colonna2, colonna3, colonna4, colonna5 e colonna6" -->
+    <table id="headerTable">
+      <tr>
+        <th>colonna1</th>
+        <th>colonna2</th>
+        <th>colonna3</th>
+        <th>colonna4</th>
+        <th>colonna5</th>
+        <th>colonna6</th>
+      </tr>
+    </table>
+    <p>Grid con 15K record</p>
     <div id="gridDiv" style="max-width: 740px; height: 400px; margin: 0px auto;"></div>
-    <div id="fixed-header-table"></div>
+
     <script type="text/javascript">
+      /*
+  Griglia dati autonoma con 15k righe dati e più intestazioni CSV.
+  Impara come:
+
+    - Renderizzare un grande set di dati CSV in una griglia dati.
+  */
+      // JS
+
       JSC.fetch('resources/wavebuoynetwork.csv').then(function (response) {
         if (response.ok) {
           response.text().then(function (text) {
@@ -38,26 +53,7 @@
               { value: '%SignificantWaveHeight' },
               { value: '%SeaTemperature' },
             ];
-            JSC.Grid('gridDiv', parsedData).then(function (grid) {
-              // get first row
-              var firstRow = grid.table.rows[0];
-              // create a new table for fixed header
-              var fixedHeaderTable = document.createElement('table');
-              fixedHeaderTable.setAttribute('id', 'fixed-header-table');
-              // append first row to the fixed header table
-              fixedHeaderTable.appendChild(firstRow);
-              // insert fixed header table before grid table
-              grid.table.parentNode.insertBefore(fixedHeaderTable, grid.table);
-              // sync fixed header table columns with grid table
-              var gridTableHeader = grid.table.getElementsByTagName('thead')[0];
-              var fixedHeaderTableHeader = fixedHeaderTable.createTHead();
-              for (var i = 0; i < gridTableHeader.rows[0].cells.length; i++) {
-                fixedHeaderTableHeader.rows[0].appendChild(gridTableHeader.rows[0].cells[i].cloneNode(true));
-              }
-              // sync fixed header table width with grid table
-              fixedHeaderTable.style.tableLayout = 'fixed';
-              fixedHeaderTable.style.width = grid.table.offsetWidth + 'px';
-            });
+            JSC.Grid('gridDiv', parsedData).then(function (grid) {});
           });
         } else {
           console.error('Problem loading csv data.');
@@ -65,4 +61,5 @@
       });
     </script>
   </body>
+</html>
 
