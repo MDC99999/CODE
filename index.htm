@@ -11,6 +11,11 @@
     <link rel="stylesheet" type="text/css" href="css/default.css" />
     <style>
       /*CSS*/
+      .fixed-header{
+        position:sticky;
+        top:0;
+        background-color:white;
+      }
     </style>
   </head>
   <body>
@@ -39,7 +44,16 @@ Learn how to:
               { value: '%SignificantWaveHeight' },
               { value: '%SeaTemperature' },
             ];
-            JSC.Grid('gridDiv', parsedData, { fixedHeaders: true }).then(function (grid) {});
+            JSC.Grid('gridDiv', parsedData).then(function (grid) {
+              // get first row
+              var firstRow = grid.table.rows[0];
+              // create a copy of first row
+              var fixedRow = firstRow.cloneNode(true);
+              // set the class for fixed row
+              fixedRow.classList.add('fixed-header');
+              // append fixed row to the table
+              grid.table.parentNode.insertBefore(fixedRow, grid.table);
+            });
           });
         } else {
           console.error('Problem loading csv data.');
