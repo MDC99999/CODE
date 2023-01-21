@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Tabella | JSCharting</title>
+    <title>Grid Csv Large | JSCharting</title>
     <meta http-equiv="content-type" content="text-html; charset=utf-8" />
 
     <script type="text/javascript" src="jsc/jscharting.js"></script>
@@ -14,7 +14,7 @@
     </style>
   </head>
   <body>
-    <p>Tabella con 15K records</p>
+    <p>Grid with 15K records</p>
     <div id="gridDiv" style="max-width: 740px; height: 400px; margin: 0px auto;"></div>
 
     <script type="text/javascript">
@@ -39,7 +39,7 @@ Learn how to:
               { value: '%SignificantWaveHeight' },
               { value: '%SeaTemperature' },
             ];
-            JSC.Grid('gridDiv', parsedData, { fixedHeaders: true }).then(function (grid) {});
+            JSC.Grid('gridDiv', parsedData).then(function (grid) {});
           });
         } else {
           console.error('Problem loading csv data.');
@@ -48,4 +48,3 @@ Learn how to:
     </script>
   </body>
 </html>
-
