@@ -9,6 +9,7 @@
     <script type="text/javascript" src="jsc/modules/datagrid.js"></script>
 
     <link rel="stylesheet" type="text/css" href="css/default.css" />
+
     <style>
     /* Imposta la larghezza delle colonne della tabella di intestazione come quella della tabella principale */
     #headerTable th {
@@ -17,7 +18,12 @@
     table {
       margin: 0px auto; /* centra la tabella orizzontalmente */
     }
-   </style>
+    #headerTable th:first-child {
+      border: 1px solid black;
+      padding: 10px;
+    }
+    </style>
+
   </head>
   <body>
     <!-- Nuova tabella di intestazione con colonne "colonna1, colonna2, colonna3, colonna4, colonna5 e colonna6" -->
