@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Tabella | JSCharting</title>
+    <title>Grid Csv Large | JSCharting</title>
     <meta http-equiv="content-type" content="text-html; charset=utf-8" />
 
     <script type="text/javascript" src="jsc/jscharting.js"></script>
@@ -11,26 +11,20 @@
     <link rel="stylesheet" type="text/css" href="css/default.css" />
     <style>
       /*CSS*/
-      .fixed-header{
-        position:sticky;
-        top:0;
+      #fixed-header-table {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
         background-color:white;
       }
     </style>
   </head>
   <body>
-    <p>Tabella con 15000 records</p>
+    <p>Grid with 15K records</p>
     <div id="gridDiv" style="max-width: 740px; height: 400px; margin: 0px auto;"></div>
-
+    <div id="fixed-header-table"></div>
     <script type="text/javascript">
-      /*
-Stand-alone JS data grid with 15k data rows and multiple CSV headers.
-Learn how to:
-
-  - Render a large CSV data set in a data grid.
-*/
-      // JS
-
       JSC.fetch('resources/wavebuoynetwork.csv').then(function (response) {
         if (response.ok) {
           response.text().then(function (text) {
@@ -47,12 +41,22 @@ Learn how to:
             JSC.Grid('gridDiv', parsedData).then(function (grid) {
               // get first row
               var firstRow = grid.table.rows[0];
-              // create a copy of first row
-              var fixedRow = firstRow.cloneNode(true);
-              // set the class for fixed row
-              fixedRow.classList.add('fixed-header');
-              // append fixed row to the table
-              grid.table.parentNode.insertBefore(fixedRow, grid.table);
+              // create a new table for fixed header
+              var fixedHeaderTable = document.createElement('table');
+              fixedHeaderTable.setAttribute('id', 'fixed-header-table');
+              // append first row to the fixed header table
+              fixedHeaderTable.appendChild(firstRow);
+              // insert fixed header table before grid table
+              grid.table.parentNode.insertBefore(fixedHeaderTable, grid.table);
+              // sync fixed header table columns with grid table
+              var gridTableHeader = grid.table.getElementsByTagName('thead')[0];
+              var fixedHeaderTableHeader = fixedHeaderTable.createTHead();
+              for (var i = 0; i < gridTableHeader.rows[0].cells.length; i++) {
+                fixedHeaderTableHeader.rows[0].appendChild(gridTableHeader.rows[0].cells[i].cloneNode(true));
+              }
+              // sync fixed header table width with grid table
+              fixedHeaderTable.style.tableLayout = 'fixed';
+              fixedHeaderTable.style.width = grid.table.offsetWidth + 'px';
             });
           });
         } else {
@@ -61,5 +65,4 @@ Learn how to:
       });
     </script>
   </body>
-</html>
 
